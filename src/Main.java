@@ -343,12 +343,12 @@ public class Main {
     }
 
     private void priceAdjustment(){
-        //This method is only capable of increasing the price for now, as requested by the activity requisite.
         String choice;
+        int modal;
         double percent;
         double finalPrice;
-        Scanner scanner = new Scanner(System.in);
         do {
+            Scanner scanner = new Scanner(System.in);
             showHeader();
             System.out.println("REAJUSTE DE PREÇO \n");
             System.out.println("Informe o nome do produto a ser atualizado: \n");
@@ -357,19 +357,36 @@ public class Main {
             for(int i = 0; i < currentPosition; i++){
                 if(queryName.equalsIgnoreCase(listProducts[i].getNome())){
                     control = false;
-                    System.out.println("Produto localizado! \n");
+                    System.out.println("\nProduto localizado!");
                     System.out.println("\nNome: " + listProducts[i].getNome() +
                             "\nUnidade: " + listProducts[i].getUnidade() +
                             "\nPreço unitário: R$" + listProducts[i].getPrecoUnitario() +
                             "\nQuantidade em estoque: " + listProducts[i].getQuantidadeEstoque());
-                    System.out.println("Informe a variação de preço a ser aplicada em porcentagem: ");
-                    percent = (scanner.nextDouble())/100;
-                    finalPrice = (listProducts[i].getPrecoUnitario() * percent) + listProducts[i].getPrecoUnitario();
-                    System.out.println("Novo preço unitário: " + finalPrice);
-                    choice = confirmOperation();
-                    if(choice.equalsIgnoreCase("S")){
-                        listProducts[i].setPrecoUnitario(finalPrice);
-                        break;
+
+                    System.out.println("\n1 - Aumento de preço" +
+                            "\n2 - Diminuição de preço");
+                    modal = getChoice();
+                    if(modal == 1){
+                        System.out.println("Informe a variação de preço a ser aplicada em porcentagem: ");
+                        percent = (scanner.nextDouble())/100;
+                        finalPrice = listProducts[i].getPrecoUnitario() + (listProducts[i].getPrecoUnitario() * percent);
+                        System.out.println("Novo preço unitário: " + finalPrice);
+                        choice = confirmOperation();
+                        if(choice.equalsIgnoreCase("S")){
+                            listProducts[i].setPrecoUnitario(finalPrice);
+                            break;
+                        }
+                    }
+                    else if(modal == 2){
+                        System.out.println("Informe a variação de preço a ser aplicada em porcentagem: ");
+                        percent = (scanner.nextDouble())/100;
+                        finalPrice = listProducts[i].getPrecoUnitario() - (listProducts[i].getPrecoUnitario() * percent);
+                        System.out.println("Novo preço unitário: " + finalPrice);
+                        choice = confirmOperation();
+                        if(choice.equalsIgnoreCase("S")){
+                            listProducts[i].setPrecoUnitario(finalPrice);
+                            break;
+                        }
                     }
                 }
             }
@@ -389,7 +406,7 @@ public class Main {
                     "\nQuantidade em estoque: " + listProducts[i].getQuantidadeEstoque());
         }
         Scanner scanner = new Scanner(System.in);
-        System.out.println("APERTE QUALQUER LETRA E APERTE ENTER PARA CONTINUAR");
+        System.out.println("DIGITE QUALQUER LETRA E APERTE ENTER PARA CONTINUAR");
         scanner.next();
     }
 
